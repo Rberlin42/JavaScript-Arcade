@@ -1,5 +1,5 @@
 // Global constants
-const BOARD_SIZE = 256;	// Canvas size in pixels
+const BOARD_SIZE = 512;	// Canvas size in pixels
 const GRID_SIZE = 32;
 const CLOCK_SPEED = 64;
 const TILE_SIZE = BOARD_SIZE / GRID_SIZE;

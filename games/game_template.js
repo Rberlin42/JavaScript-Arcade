@@ -1,7 +1,7 @@
 // Starter code for new games
 
 // Global constants
-const BOARD_SIZE = 256;	// Canvas size in pixels
+const BOARD_SIZE = 512;	// Canvas size in pixels
 
 
 // DOM elements
