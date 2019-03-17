@@ -1,0 +1,14 @@
+/* Style for the game page */
+
+canvas{
+	background-color: black;
+	display: block;
+	margin: auto;
+}
+h1{
+	text-align: center;
+}
+div{
+	margin: auto;
+	text-align: center;
+}
