@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Brick Breaker</title>
+	<style>
+		canvas{
+			background-color: black;
+			display: block;
+			margin: auto;
+
+		}
+		h1{
+			text-align: center;
+		}
+		div{
+			margin: auto;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>Brick Breaker</h1>
+	<canvas id="board" width="500" height="500"></canvas>
+	<h1 id="level">Level: 1</h1>
+	<h1 id="lives">Lives: 2</h1>
+	<h1 id="score">Score: 0</h1>
+	<h1 id="hs">High Score: 0</h1>
+
+	<script type="text/javascript">
+		document.addEventListener('keydown', keyPressed);
+		document.addEventListener('keyup', keyRelease);
+		window.addEventListener("keydown", function(e) {
+    		//arrow keys
+    		if([37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+       			e.preventDefault();
+    		}
+		}, false);
+
+
+		var board = document.getElementById("board").getContext("2d");
+		var timer;
+		var BOARD_SIZE = 500;
+		var PI = Math.PI;
+
+		var score;
+		var high_score = 0;
+		var multiplier;
+		var lives;
+		var level;
+
+		//powerup timers
+		var long_timer = 0;
+		var sticky_count = 0;
+		var speed_timer = 0;
+
+		var balls = [];
+		var paddle;
+		var arrow;
+		var bricks = [];
+		var powerups = [];
+
+		reset();
+
+		function reset(){
+			score = 0;
+			multiplier = 1;
+			lives = 2;
+			level = 1;
+			setLevel(level);
+			timer = setInterval(gameLoop, 5);
+		}
+
+		function setLevel(l){
+			if(l == 1)
+				bricks =[new Brick(0, 25, 1), new Brick(100, 25, 1), new Brick(200, 25, 1), new Brick(300, 25, 1), new Brick(400, 25, 1),
+					  new Brick(50, 50, 1), new Brick(150, 50, 1), new Brick(250, 50, 1), new Brick(350, 50, 1), new Brick(450, 50, 1)];
+
+			if(l == 2){
+				bricks =[new Brick(0, 25, 2), new Brick(100, 25, 2), new Brick(200, 25, 2), new Brick(300, 25, 2), new Brick(400, 25, 2),
+					  new Brick(50, 50, 2), new Brick(150, 50, 2), new Brick(250, 50, 2), new Brick(350, 50, 2), new Brick(450, 50, 2),
+					  new Brick(0, 75, 1), new Brick(100, 75, 1), new Brick(200, 75, 1), new Brick(300, 75, 1), new Brick(400, 75, 1)];
+			}
+			balls = [new Ball()];
+			paddle = new Paddle();
+			setServe();
+		}
+
+		function setServe(){
+			arrow = new Arrow(balls[0].x, balls[0].y);
+		}
+
+		function Arrow(x, y){
+			this.x = x;
+			this.y = y;
+			this.dx = -.01;
+			this.length = 100;
+			this.direction = PI/2;
+
+			this.draw = function(){
+				board.setLineDash([5, 3]);
+				board.strokeStyle = "white";
+				board.beginPath();
+				board.moveTo(this.x, this.y);
+				board.lineTo(Math.cos(this.direction)*this.length + x, y - Math.sin(this.direction)*this.length);
+				board.stroke();
+			}
+
+			this.update = function(){
+				this.direction += this.dx;
+				if(this.direction < PI/10)
+					this.dx = .01;
+				if(this.direction > 9*PI/10)
+					this.dx = -.01;
+			}
+		}
+
+		function Ball(){
+			this.x = 250;
+			this.y = 445;
+
+			this.velocity = 0;
+			this.direction = PI/4;
+			this.radius = 5;
+
+			this.draw = function(){
+				board.strokeStyle = "white";
+				board.fillStyle = "white";
+				board.beginPath();
+				board.arc(this.x, this.y, this.radius, 0, 2*PI);
+				board.stroke();
+				board.fill();
+			}
+
+			this.checkCollision = function(){
+				//check the borders
+				if(this.y-this.radius <= 0)
+					this.direction = -this.direction
+				if(this.x+this.radius >= BOARD_SIZE || this.x-this.radius <= 0)
+					this.direction = PI-this.direction;
+
+				//check the paddle
+				var c = intersect(this, paddle);
+				if(c == 0){
+					this.direction = -this.direction;
+
+					var diff = (this.x - paddle.x - paddle.length / 2) / (paddle.length/2);
+
+					if(sticky_count > 0){
+						this.velocity = 0;
+						setServe();
+						sticky_count--;
+					}
+					else{
+						//calculate change in velocity and direction
+						var y = Math.sin(this.direction) * this.velocity;
+						var x = Math.cos(this.direction) * this.velocity;
+						x += diff;
+
+						this.velocity = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+						this.direction = Math.atan(y / x);
+						if(this.direction < 0)
+							this.direction += PI;
+					}
+				}
+				if(c == 1)
+					this.direction = PI - this.direction;
+					
+				//check for bricks
+				for(var i = 0; i < bricks.length; i++){
+					c = intersect(this, bricks[i]);
+					if(c == 0)
+						this.direction = -this.direction;
+					if(c == 1)
+						this.direction = PI - this.direction;
+					if(c != -1){
+						bricks[i].weight--;
+						addPoints(1);
+					}
+				}
+			}
+
+			this.update = function(){
+				this.checkCollision();
+				this.y -= this.velocity*Math.sin(this.direction);
+				this.x += this.velocity*Math.cos(this.direction);
+			}
+		}
+
+		function Brick(x, y, w){
+			this.x = x;
+			this.y = y;
+			this.weight = w;
+			this.height = 25;
+			this.length = 50;
+
+			this.draw = function(){
+				board.fillStyle = "gray";
+				board.fillRect(this.x, this.y, this.length, this.height);
+				board.fillStyle = "rgb(" + (255-25*(this.weight-1)) + "," + ((this.weight-1)*25)+ "," + ((this.weight-1)*15) + ")";
+				board.fillRect(this.x+2, this.y+2, this.length-4, this.height-4);
+			}
+		}
+
+		function Paddle(){
+			this.x = 215;
+			this.y = 450;
+			this.length = 70;
+			this.height = 6;
+			this.dx = 0;
+			this.speed = 1;
+
+			this.draw = function(){
+				board.fillStyle = "green";
+				board.fillRect(this.x, this.y, this.length, this.height);
+ 			}
+
+ 			this.update = function(){
+ 				this.x += this.dx*this.speed;
+ 				if(this.x < 0){
+ 					this.x = 0;
+ 				}
+ 				if(this.x+this.length > BOARD_SIZE)
+ 					this.x = BOARD_SIZE-this.length;
+
+ 				if(speed_timer > 0)
+ 					this.speed = 2;
+ 				else
+ 					this.speed = 1;
+
+ 				if(long_timer > 0)
+ 					this.length = 100;
+ 				else
+ 					this.length = 70;
+ 			}
+		}
+
+		function Powerup(x, y){
+			this.x = x;
+			this.y = y;
+			this.direction = 3*PI/2;
+			this.speed = 1;
+			this.radius = 10;
+
+			//0 = extra life 
+			//1 = long board
+			//2 = multiballs
+			//3 = sticky
+			//4 = speed
+			this.type = Math.floor(Math.random()*5);
+
+			this.draw = function(){
+				board.setLineDash([]);
+				if(this.type == 0){
+					board.strokeStyle = "rgba(255, 0, 0, .8)";
+					board.fillStyle = "rgba(255, 0, 0, .5)";
+				}
+				if(this.type == 1){
+					board.strokeStyle = "rgba(0, 0, 255, .8)";
+					board.fillStyle = "rgba(0, 0, 255, .5)";
+				}
+				if(this.type == 2){
+					board.strokeStyle = "rgba(255, 0, 255, .8)";
+					board.fillStyle = "rgba(255, 0, 255, .5)";
+				}
+				if(this.type == 3){
+					board.strokeStyle = "rgba(0, 255, 0, .8)";
+					board.fillStyle = "rgba(0, 255, 0, .5)";
+				}
+				if(this.type == 4){
+					board.strokeStyle = "rgba(255, 140, 0, .8)";
+					board.fillStyle = "rgba(255, 140, 0, .5)";
+				}
+
+				board.beginPath();
+				board.arc(this.x, this.y, this.radius, 0, 2*PI);
+				board.stroke();
+				board.fill();
+			}
+
+			this.update = function(){
+				this.y += this.speed;
+			}
+		}
+
+		function keyPressed(e){
+			var code = e.keyCode;
+			if(code == 37 && arrow == null)
+				paddle.dx = -1;
+			if(code == 39 && arrow == null)
+				paddle.dx = 1;
+			if(code == 32 && arrow != null){
+				balls[0].velocity = 2;
+				balls[0].direction = arrow.direction;
+				arrow = null;
+			}
+		}
+
+		function keyRelease(e){
+			var code = e.keyCode;
+			if(code == 37 && paddle.dx == -1)
+				paddle.dx = 0;
+			if(code == 39 && paddle.dx == 1)
+				paddle.dx = 0;
+		}
+
+		//returns -1 if they don't intersect or if it's on its way out
+		//returns 1 if they intersect on a vertical side of the rect
+		//returns 0 if the intersect on a horizontal side of the rect
+		function intersect(ball, rect){
+			if(ball.x+ball.radius < rect.x || ball.x-ball.radius > rect.x+rect.length ||
+				ball.y+ball.radius < rect.y || ball.y-ball.radius > rect.y+rect.height)
+				return -1;
+
+			//0 top
+			//1 right
+			//2 bottom
+			//3 left
+			sides = [];
+			var dir = ball.direction % (2*PI);
+			while(dir < 0)
+				dir += 2*PI;
+			if(dir > 0 && dir < PI)
+				sides.push(2);
+			if(dir > PI/2 && dir < (3/2)*PI)
+				sides.push(1);
+			if(dir > PI)
+				sides.push(0);
+			if(dir < PI/2 || dir > (3/2)*PI)
+				sides.push(3);
+
+			var m = -Math.tan(dir);
+
+			for(var i = 0; i < sides.length; i++){
+				if(sides[i] == 0){
+					var y = rect.y;
+					var x = (y - ball.y + (m * ball.x)) / m;
+					if(m == 5443746451065123)
+						x = ball.x;
+					if(x >= rect.x && x <= rect.x+rect.length){
+						if(ball.y > rect.y+rect.height/2)
+							return -1;
+						return 0;
+					}
+				}
+				if(sides[i] == 1){
+					var x = rect.x+rect.length;
+					var y = m * (x - ball.x) + ball.y;
+					if(y >= rect.y && y <= rect.y+rect.height){
+						if(ball.x < rect.x+rect.length/2)
+							return -1;
+						return 1;
+					}
+				}
+				if(sides[i] == 2){
+					var y = rect.y+rect.height;
+					var x = (y - ball.y + (m * ball.x)) / m;
+					if(m == 16331239353195370)
+						x = ball.x;
+					if(x >= rect.x && x <= rect.x+rect.length){
+						if(ball.y < rect.y+rect.height/2)
+							return -1;
+						return 0;
+					}
+				}
+				if(sides[i] == 3){
+					var x = rect.x;
+					var y = m * (x - ball.x) + ball.y;
+					if(y >= rect.y && y <= rect.y+rect.height){
+						if(ball.x > rect.x+rect.length/2)
+							return -1;
+						return 1;
+					}
+				}
+			}
+		}
+
+		function addPoints(p){
+			score += p * multiplier;
+			document.getElementById("score").innerHTML = "Score: " + score;
+
+			if(score > high_score){
+				high_score = score;
+				document.getElementById("hs").innerHTML = "High Score: " + high_score;
+			}
+		}
+
+		function startPowerup(type){
+			switch(type){
+				case 0:
+					if(lives < 5)
+						document.getElementById("lives").innerHTML = "Lives: " + (++lives);
+					break;
+				case 1:
+					long_timer = 2000;
+					break;
+				case 2:
+					if(balls.length == 1){
+						for(var i = 0; i < 3; i++)
+							balls.push(new Ball());
+
+						for(var i = 0; i < balls.length; i++){
+							balls[i].x = balls[0].x;
+							balls[i].y = balls[0].y;
+							balls[i].velocity = 2;
+							var dir = balls[0].direction - .15;
+							balls[i].direction = dir + i/10;
+						}
+					}
+					break;
+				case 3:
+					sticky_count = 5;
+					break;
+				case 4:
+					speed_timer = 2000;
+					break;
+			}
+		}
+
+		function gameLoop(){
+
+			speed_timer--;
+			long_timer--;
+
+			board.clearRect(0,0,BOARD_SIZE,BOARD_SIZE);
+			paddle.draw();
+			if(arrow != null)
+				arrow.draw();
+
+			//bricks
+			for(var i = 0; i < bricks.length; i++){
+				if(bricks[i].weight <= 0){
+
+					if(Math.random() < .5 && bricks.length > 1){
+						//spaw powerup
+						powerups.push(new Powerup(bricks[i].x, bricks[i].y));
+					}
+
+					bricks.splice(i, 1);
+					addPoints(2);
+					i--;
+				}
+				else
+					bricks[i].draw();
+			}
+
+			//check if the level is beat
+			if(bricks.length == 0){
+				setLevel(++level);
+				document.getElementById("level").innerHTML = "Level: " + level;
+			}
+
+			//balls
+			for(var i = 0; i < balls.length; i++){
+				balls[i].draw();
+				balls[i].update();
+				if(balls[i].y > BOARD_SIZE){
+					balls.splice(i, 1);
+					i--;
+				}
+			}
+
+			//powerups
+			for(var i = 0; i < powerups.length; i++){
+				powerups[i].draw();
+				powerups[i].update();
+
+				if(powerups[i].y > BOARD_SIZE){
+					powerups.splice(i, 1);
+					i--;
+					continue;
+				}
+
+				if(intersect(powerups[i], paddle) != -1){
+					startPowerup(powerups[i].type);
+					powerups.splice(i, 1);
+				}
+			}
+
+			//check if we lost a life
+			if(balls.length == 0){
+				lives--;
+				speed_timer = 0;
+				long_timer = 0;
+				sticky_count = 0;
+				powerups = [];
+
+				document.getElementById("lives").innerHTML = "Lives: " + lives;
+				if(lives < 0){
+					clearInterval(timer);
+				}
+				else{
+					balls = [new Ball()];
+					paddle = new Paddle();
+					setServe();
+				}
+			}
+
+			paddle.update();
+			if(arrow != null)
+				arrow.update();
+		}
+
+	</script>
+</body>
+</html>
+	

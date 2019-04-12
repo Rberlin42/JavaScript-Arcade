@@ -16,10 +16,20 @@ $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
 	high_score = $("#hs");
+
+	// set titles
+	$("#game-title").text("Title");
+	$("title").text("Javascript Arcade - Title");
 });
 
 //restart the game
 function reset(){
+	$("game-over").hide();
 	// called when the start button is clicked
 	// Add code to start/restart the game
+}
+
+// Game over
+function gameOver(){
+	$("game-over").show();
 }

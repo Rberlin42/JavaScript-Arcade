@@ -24,10 +24,15 @@ $(document).ready(function(){
 	scoreBoard = $("#score");
 	high_score = $("#hs");
 	$(document).keydown(keyPressed);
+
+	// set titles
+	$("#game-title").text("Snake");
+	$("title").text("Javascript Arcade - Snake");
 });
 
 // Handle key presses for the arrow keys
 function keyPressed(e){
+	if(snake === undefined) return;
 	var code = e.keyCode;
 	if(code == 37){
 		if(!equals(snake.tail[0].y, snake.tail[1].y)){
@@ -57,6 +62,7 @@ function keyPressed(e){
 
 //restart the game
 function reset(){
+	$("#game-over").hide();
 	clearInterval(timer);
 
 	snake = new Snake();
@@ -68,7 +74,7 @@ function reset(){
 // Game over
 function gameOver(){
 	clearInterval(timer);
-	board.clearRect(0, 0, 512, 512);
+	$("#game-over").show();
 }
 
 // Main game loop
