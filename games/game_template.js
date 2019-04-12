@@ -12,6 +12,7 @@ var scoreBoard;
 
 // store some DOM elements when the document is loaded
 // add key press listeners
+// set the title and controls
 $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
@@ -20,6 +21,9 @@ $(document).ready(function(){
 	// set titles
 	$("#game-title").text("Title");
 	$("title").text("Javascript Arcade - Title");
+
+	// set controls
+	$("#controls").append("<p>key: does this function</p>");
 });
 
 //restart the game

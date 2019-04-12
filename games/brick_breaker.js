@@ -76,6 +76,10 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Brick Breaker");
 	scoreBoard.html("Level: " + (level+1));
 	high_score.html("High Score: " + (hScore+1));
+
+	// set controls
+	$("#controls").append("<p>Arrow Keys: Move the Paddle</p>");
+	$("#controls").append("<p>Spacebar: Serve the Ball</p>");
 });
 
 //restart the game

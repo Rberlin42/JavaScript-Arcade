@@ -6,7 +6,12 @@
 		<title></title>
 		<link rel="stylesheet" href="styles/game_style.css"/>
 		<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
-		<script type="text/javascript" src="games/brick_breaker.js"></script>
+		<?php
+			$gameFile = $_GET["game"];
+			if(isset($gameFile)){
+				echo "<script type='text/javascript' src='games/" . $gameFile . ".js'></script>";
+			}
+		?>
 	</head>
 
 	<body>

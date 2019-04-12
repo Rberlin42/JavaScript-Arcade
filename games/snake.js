@@ -28,6 +28,9 @@ $(document).ready(function(){
 	// set titles
 	$("#game-title").text("Snake");
 	$("title").text("Javascript Arcade - Snake");
+
+	// set controls
+	$("#controls").append("<p>Arrow Keys: Move the Snake</p>");
 });
 
 // Handle key presses for the arrow keys
