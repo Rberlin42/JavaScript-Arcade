@@ -28,12 +28,12 @@ $(document).ready(function(){
 
 //restart the game
 function reset(){
-	$("game-over").hide();
+	$("#game-over").hide();
 	// called when the start button is clicked
 	// Add code to start/restart the game
 }
 
 // Game over
 function gameOver(){
-	$("game-over").show();
+	$("#game-over").show();
 }

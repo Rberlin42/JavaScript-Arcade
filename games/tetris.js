@@ -50,11 +50,12 @@ $(document).ready(function(){
 
 //restart the game
 function reset(){
-	$("game-over").hide();
+	$("#game-over").hide();
 	clearInterval(timer);
 
 	score = 0;
 	piece = new Piece();
+	nextPiece = new Piece(16, 9);
 	grid = new Array(GRID_HEIGHT);
 	for(var i = 0; i < GRID_HEIGHT; i++){
 		grid[i] = new Array(GRID_WIDTH);
@@ -69,7 +70,8 @@ function reset(){
 // Game over
 function gameOver(){
 	clearInterval(timer);
-	$("game-over").show();
+	console.log("hi");
+	$("#game-over").show();
 }
 
 // Handle key presses for the arrow keys
@@ -115,6 +117,7 @@ function gameLoop(){
 function draw(){
 	board.clearRect(0, 0, BOARD_SIZE, BOARD_SIZE);
 	piece.draw();
+	nextPiece.draw();
 
 	// draw the blocks on the board
 	for(var i = 0; i < GRID_HEIGHT; i++)
@@ -123,7 +126,7 @@ function draw(){
 				var b = new Block(j, i, grid[i][j]);
 				b.draw();
 			}
-	
+
 	//draw the separating line
 	board.strokeStyle = "white";
 	board.beginPath();
@@ -145,11 +148,17 @@ function setPiece(){
 	});
 
 	// get new piece
-	piece = new Piece();
+	piece = new Piece(undefined, undefined, nextPiece.type);
+	nextPiece = new Piece(16, 9);
+
+	//check if we lost
+	if(!piece.validSpot())
+		gameOver();
 }
 
 // check if any rows are completed
 function checkRows(){
+	var numCleared = 0;
 	for(var y = 0; y < GRID_HEIGHT; y++){
 		var completed = true;
 		for(var x = 0; x < GRID_WIDTH; x++)
@@ -158,6 +167,7 @@ function checkRows(){
 
 		// if the row is completed, clear it and shift everything down
 		if(completed){
+			numCleared++;
 			grid.splice(y, 1);
 			var newLine = new Array(GRID_WIDTH);
 			for(var i = 0; i < GRID_WIDTH; i++)
@@ -165,7 +175,25 @@ function checkRows(){
 			grid.splice(0, 0, newLine);
 		}
 	}
+
+	// update scores
+	switch(numCleared){
+		case 1:
+			score += 100;
+			break;
+		case 2:
+			score += 300;
+			break;
+		case 3: 
+			score += 500;
+			break;
+		case 4: 
+			score += 800;
+			break;
+	}
+	hScore = Math.max(hScore, score);
 }
+
 
 /////////////////////////////////////////////////
 // 				Object Implementations 			/
@@ -195,12 +223,14 @@ BLOCK TYPES:
 5: S
 6: Z
 */
-function Piece(x, y){
-	this.x = 6;
-	this.y = 0;
-	var type = Math.floor(Math.random() * 7);
+function Piece(x = 6, y = 0, t=null){
+	this.x = x;
+	this.y = y;
+	this.type = t
+	if(this.type == null)
+		this.type = Math.floor(Math.random() * 7);
 
-	switch(type){
+	switch(this.type){
 		case 0:
 			this.blocks = [[-1, 0], [1, 0], [2, 0]];
 			this.color = "#00ffff";
