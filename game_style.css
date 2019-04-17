@@ -1,0 +1,184 @@
+/* Style for the game page */
+@import url(https://fonts.googleapis.com/css?family=Heebo);
+
+canvas{
+	display: block;
+	margin: auto;
+}
+h1{
+	text-align: center;
+}
+div{
+	margin: auto;
+	text-align: center;
+}
+
+/* contains the canvas */
+#game-container{
+	position: relative;
+	width: 512px;
+	margin: auto;
+	padding: 0;
+}
+
+/* game over text */
+#game-over{
+	display: none;
+	position: absolute;
+	text-align: center;
+	top: 0px;
+	width: 512px;
+	height: 512px;
+	line-height: 512px;
+	margin: 0px;
+	font-size: 2em;
+}
+
+.red{
+	color: #d17b7b;
+}
+
+.win{
+	color: #7cb799;
+}
+
+/* div containing the title and the ? controls button */
+#title-box{
+	margin-left: 30px;
+	margin-right: 30px;
+	padding-left: 20px;
+}
+
+#game-title{
+	font-size: 45px;
+	height: 65px;
+	padding-top: 5px;
+	margin: 0;
+}
+
+
+/* div containing the 2 scores */
+#scoreboard{
+	float: left;
+	width: 256px;
+	padding-top: 5px;
+}
+
+#score{
+	padding-top: 5px;
+	height: 25px;
+	font-size: 20px;
+	margin: 0;
+}
+
+#hs{
+	height: 25px;
+	font-size: 20px;
+	margin: 0;
+}
+
+/* box containing the start button */
+#box{
+	height: 50px;
+	padding-top: 15px;
+	margin: 0;
+}
+
+/* start button */
+#sb{
+	border: 1px solid white;
+	font-size: 20px;
+	font-family: Heebo;
+	color: white;
+	background-color: #999999;
+	height: 40px;
+	width: 80px;
+}
+
+
+
+/* controls button + text */
+
+#ctbutton{
+	border-radius: 50%;
+	background-color: #999999;
+	border: 1px solid white;
+	color: white;
+	font-weight: bold;
+}
+
+.ctmenu{
+	float: right;
+	position: relative;
+	display: inline-block;
+	border-radius: 50%;
+	padding-top: 10px;
+}
+
+.ctcontent{
+	display: none;
+	position: absolute;
+	background-color: #eeeeee;
+	min-height: 100px;
+	width: 225px;
+	z-index: 1;
+	text-align: left;
+	padding: 10px;
+}
+
+.ctcontent h2{
+	font-size: 20px;
+	padding: 0;
+	margin: 0;
+}
+
+#controls-text{
+	font-size: 16px;
+	padding: 0;
+	margin: 0;
+}
+
+.ctmenu:hover .ctcontent {
+	display: block;
+}
+
+
+
+
+
+
+
+body{
+	font-family: Heebo;
+	margin: 0;
+	padding: 0;
+	width: 514px;
+	margin: auto;
+	margin-top: 0;
+	color: #999999;
+}
+
+
+
+
+/* old controls stuff
+
+#controls{
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+	padding-top: 15px;
+	text-align: left;
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+#controls h2{
+	font-size: 20px;
+	padding: 0;
+	margin: 0;
+}
+
+*/
+
+
