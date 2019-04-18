@@ -15,16 +15,18 @@
 	</head>
 
 	<body>
-		<h1 id="game-title"></h1>
+		<div id="title-box">
+			<div class="ctmenu"><button id="ctbutton">?</button><div id="ctcontent"><h2>Controls</h2></div></div>
+			<h1 id="game-title"></h1>
+		</div>
 		<div id="game-container">
 			<canvas id="board" width="512" height="512"></canvas>
-			<h2 id="game-over">Game Over</h2>
+			<h2 id="game-over" class="red">Game Over</h2>
 		</div>
-		<h1 id="score">Score: 0</h1>
-		<h1 id="hs">High Score: 0</h1>
-		<div><button onclick="reset()">Start</button></div>
-		<div id="controls">
-			<h2>Controls</h2>
+		<div id="scoreboard">
+			<h1 id="score">Score: 0</h1>
+			<h1 id="hs">High Score: 0</h1>
 		</div>
+		<div id="box"><button id="sb" onclick="reset()">Start</button></div>
 	</body>
 </html>

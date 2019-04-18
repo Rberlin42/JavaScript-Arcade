@@ -67,6 +67,7 @@ $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
 	high_score = $("#hs");
+	$("#board").css("background-color", "black");
 
 	$(document).keydown(keyPressed);
 	$(document).keyup(keyRelease);
@@ -78,8 +79,8 @@ $(document).ready(function(){
 	high_score.html("High Score: " + (hScore+1));
 
 	// set controls
-	$("#controls").append("<p>Arrow Keys: Move the Paddle</p>");
-	$("#controls").append("<p>Spacebar: Serve the Ball</p>");
+	$("#ctcontent").append("<p>Arrow Keys: Move the Paddle</p>");
+	$("#ctcontent").append("<p>Spacebar: Serve the Ball</p>");
 });
 
 //restart the game

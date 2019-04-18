@@ -6,7 +6,7 @@ const TILE_SIZE = 25;
 const GRID_WIDTH = 12;
 const GRID_HEIGHT = BOARD_SIZE/TILE_SIZE;
 const GRID_SIZE = GRID_WIDTH*TILE_SIZE;
-const CLOCK_SPEED = 1000;
+const CLOCK_SPEED = 500;
 
 
 // DOM elements
@@ -30,6 +30,7 @@ $(document).ready(function(){
 	// set board size
 	$("canvas").remove();
 	$("#game-container").prepend("<canvas id='board' width='525' height='525'></canvas>");
+	$("#board").css("background-color", "black");
 
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
@@ -41,11 +42,11 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Tetris");
 
 	// set controls
-	$("#controls").append("<p>Up Arrow: Rotate piece 90&deg;</p>");
-	$("#controls").append("<p>Right Arrow: Move piece right</p>");
-	$("#controls").append("<p>Left Arrow: Move piece left</p>");
-	$("#controls").append("<p>Down Arrow: Move piece down one</p>");
-	$("#controls").append("<p>Spacebar: Drop piece</p>");
+	$("#ctcontent").append("<p>Up Arrow: Rotate piece 90&deg;</p>");
+	$("#ctcontent").append("<p>Right Arrow: Move piece right</p>");
+	$("#ctcontent").append("<p>Left Arrow: Move piece left</p>");
+	$("#ctcontent").append("<p>Down Arrow: Move piece down one</p>");
+	$("#ctcontent").append("<p>Spacebar: Drop piece</p>");
 });
 
 //restart the game
