@@ -23,6 +23,7 @@ $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
 	high_score = $("#hs");
+	$("#board").css("background-color", "black");
 	$(document).keydown(keyPressed);
 
 	// set titles
@@ -30,7 +31,7 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Snake");
 
 	// set controls
-	$("#controls").append("<p>Arrow Keys: Move the Snake</p>");
+	$("#ctcontent").append("<p>Arrow Keys: Move the Snake</p>");
 });
 
 // Handle key presses for the arrow keys

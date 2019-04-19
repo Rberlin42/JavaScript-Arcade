@@ -115,7 +115,7 @@ div{
 	padding-top: 10px;
 }
 
-.ctcontent{
+#ctcontent{
 	display: none;
 	position: absolute;
 	background-color: #eeeeee;
@@ -126,7 +126,7 @@ div{
 	padding: 10px;
 }
 
-.ctcontent h2{
+#ctcontent h2{
 	font-size: 20px;
 	padding: 0;
 	margin: 0;
@@ -138,7 +138,7 @@ div{
 	margin: 0;
 }
 
-.ctmenu:hover .ctcontent {
+.ctmenu:hover #ctcontent {
 	display: block;
 }
 
