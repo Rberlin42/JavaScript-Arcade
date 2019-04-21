@@ -1,0 +1,7 @@
+{
+	"games": [
+		{"title": "Snake", "image": "temp.png", "filename": "snake"},
+		{"title": "Brick Breaker", "image": "temp.png", "filename": "brick_breaker"},
+		{"title": "Tetris", "image": "temp.png", "filename": "tetris"}
+	]
+}
