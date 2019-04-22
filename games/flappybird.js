@@ -163,6 +163,7 @@ function gameLoop() {
         player.update();
         updatePipe(pipeTop);
         updatePipe(pipeBottom);
+        window.requestAnimationFrame(gameLoop);
     }
 
     board.clearRect(0, 0, 512, 512);
@@ -171,5 +172,5 @@ function gameLoop() {
     drawPipe(pipeTop);
     drawPipe(pipeBottom);
  
-    window.requestAnimationFrame(gameLoop);
+
 }
