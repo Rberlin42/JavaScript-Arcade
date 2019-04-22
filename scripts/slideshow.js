@@ -29,7 +29,7 @@ function loadSlides(){
                 var slide = $("<div class='mySlides fade'></div>");
                 slide.append("<div class='numbertext'>" + (i+1) + "/" + numGames + "</div>");
                 slide.append("<a href='game.php?game=" + filename + "'><img src='resources/" + img + "'/></a>");
-                slide.append("<div class='game-title'>" + title + "</div>");
+                //slide.append("<div class='game-title'>" + title + "</div>");
 
                 //add to slideshow
                 $("#slideshow-container").append(slide);
