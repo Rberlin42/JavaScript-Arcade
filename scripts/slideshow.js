@@ -5,7 +5,7 @@ var auto;
 $(document).ready(function(){
     loadSlides();
     // automatically cycle through the slides
-    var auto = setInterval(function(){plusSlides(1);}, 3000);
+    var auto = setInterval(function(){plusSlides(1);}, 4000);
 });
 
 // load the slides from the json file
@@ -48,7 +48,7 @@ function loadSlides(){
 function plusSlides(n) {
     // reset the interval so it doesn't double switch
     clearInterval(auto);
-    auto = setInterval(function(){plusSlides(1);}, 3000);
+    auto = setInterval(function(){plusSlides(1);}, 4000);
 
     slideIndex += n;
     showSlides();
