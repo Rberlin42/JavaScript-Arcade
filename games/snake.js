@@ -31,7 +31,8 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Snake");
 
 	// set controls
-	$("#ctcontent").append("<p>Arrow Keys: Move the Snake</p>");
+	$("#controls-text").html("Arrow Keys: Move the Snake<br>Eat apples to gain points.<br>Don't run into walls or your own tail.");
+
 });
 
 // Handle key presses for the arrow keys

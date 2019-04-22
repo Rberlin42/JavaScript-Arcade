@@ -1,5 +1,3 @@
-// Starter code for new games
-
 // Global constants
 const BOARD_SIZE = 512;	// Canvas BOARD_SIZE in pixels
 var gridLength = 122; //(BOARD_SIZE/ 4) - 6;
@@ -35,7 +33,7 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - 2048");
 
 	// set controls
-	$("#controls").append("<p>Arrow Keys: move the grids</p>");
+	$("#controls-text").html("Arrow Keys: Shift all blocks in arrow's direction.<br>Combine same blocks to reach 2048!");
 });
 
 

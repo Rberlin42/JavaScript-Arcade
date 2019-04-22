@@ -54,6 +54,8 @@ $(document).ready(function(){
 	$("#game-title").html("Minesweeper");
 	$("#sb").text("Reset");
 
+	$("#controls-text").html("Left click to reveal a square,<br>Right click to mark a mine.<br>Don't click any mines!")
+
 	var canv = document.getElementById('board');
 	canv.addEventListener('click', getClickInfo, false);
 	canv.addEventListener('contextmenu', function(e){

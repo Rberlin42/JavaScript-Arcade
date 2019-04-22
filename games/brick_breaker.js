@@ -79,8 +79,7 @@ $(document).ready(function(){
 	high_score.html("High Score: " + (hScore+1));
 
 	// set controls
-	$("#ctcontent").append("<p>Arrow Keys: Move the Paddle</p>");
-	$("#ctcontent").append("<p>Spacebar: Serve the Ball</p>");
+	$("#controls-text").html("Arrow Keys: Move the Paddle<br>Spacebar: Serve the Ball");
 });
 
 //restart the game

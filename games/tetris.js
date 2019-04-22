@@ -42,11 +42,7 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Tetris");
 
 	// set controls
-	$("#ctcontent").append("<p>Up Arrow: Rotate piece 90&deg;</p>");
-	$("#ctcontent").append("<p>Right Arrow: Move piece right</p>");
-	$("#ctcontent").append("<p>Left Arrow: Move piece left</p>");
-	$("#ctcontent").append("<p>Down Arrow: Move piece down one</p>");
-	$("#ctcontent").append("<p>Spacebar: Drop piece</p>");
+	$("#controls-text").html("Up Arrow: Rotate piece 90&deg;<br>Right Arrow: Move piece right<br>Left Arrow: Move piece left<br>Down Arrow: Move piece down<br>Spacebar: Drop piece<br><br>Fill lines to clear them!");
 });
 
 //restart the game
