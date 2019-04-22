@@ -5,7 +5,7 @@ var auto;
 $(document).ready(function(){
     loadSlides();
     // automatically cycle through the slides
-    var auto = setInterval(function(){plusSlides(1);}, 3000);
+    var auto = setInterval(function(){plusSlides(1);}, 4000);
 });
 
 // load the slides from the json file
@@ -29,7 +29,7 @@ function loadSlides(){
                 var slide = $("<div class='mySlides fade'></div>");
                 slide.append("<div class='numbertext'>" + (i+1) + "/" + numGames + "</div>");
                 slide.append("<a href='game.php?game=" + filename + "'><img src='resources/" + img + "'/></a>");
-                slide.append("<div class='game-title'>" + title + "</div>");
+                //slide.append("<div class='game-title'>" + title + "</div>");
 
                 //add to slideshow
                 $("#slideshow-container").append(slide);
@@ -48,7 +48,7 @@ function loadSlides(){
 function plusSlides(n) {
     // reset the interval so it doesn't double switch
     clearInterval(auto);
-    auto = setInterval(function(){plusSlides(1);}, 3000);
+    auto = setInterval(function(){plusSlides(1);}, 4000);
 
     slideIndex += n;
     showSlides();
