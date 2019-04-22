@@ -6,6 +6,7 @@
 		{"title": "Minesweeper", "image": "minesweeper.png", "filename": "minesweeper"},
 		{"title": "Color Swap", "image": "color_swap.png", "filename": "bejeweled"},
 		{"title": "2048", "image": "2048.png", "filename": "2048"},
-		{"title": "Flappy Bird", "image": "flappy_bird.png", "filename": "flappy_bird"}
+		{"title": "Flappy Bird", "image": "flappy_bird.png", "filename": "flappybird"},
+		{"title": "Flappy Bird 1", "image": "flappy_bird1.png", "filename": "flappy_bird1"}
 	]
 }
