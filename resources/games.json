@@ -1,7 +1,10 @@
 {
 	"games": [
-		{"title": "Snake", "image": "temp.png", "filename": "snake"},
-		{"title": "Brick Breaker", "image": "temp.png", "filename": "brick_breaker"},
-		{"title": "Tetris", "image": "temp.png", "filename": "tetris"}
+		{"title": "Snake", "image": "snake.png", "filename": "snake"},
+		{"title": "Brick Breaker", "image": "brick_breaker.png", "filename": "brick_breaker"},
+		{"title": "Tetris", "image": "tetris.png", "filename": "tetris"},
+		{"title": "Minesweeper", "image": "minesweeper.png", "filename": "minesweeper"},
+		{"title": "Color Swap", "image": "color_swap.png", "filename": "bejeweled"},
+		{"title": "2048", "image": "2048.png", "filename": "2048"}
 	]
 }
