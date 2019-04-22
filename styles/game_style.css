@@ -54,6 +54,7 @@ div{
 	height: 65px;
 	padding-top: 5px;
 	margin: 0;
+	cursor: default;
 }
 
 
@@ -62,6 +63,7 @@ div{
 	float: left;
 	width: 256px;
 	padding-top: 5px;
+	cursor: default;
 }
 
 #score{
@@ -93,6 +95,7 @@ div{
 	background-color: #999999;
 	height: 40px;
 	width: 80px;
+	cursor: pointer;
 }
 
 
@@ -105,6 +108,7 @@ div{
 	border: 1px solid white;
 	color: white;
 	font-weight: bold;
+	cursor: help;
 }
 
 .ctmenu{
@@ -115,7 +119,7 @@ div{
 	padding-top: 10px;
 }
 
-#ctcontent{
+.ctcontent{
 	display: none;
 	position: absolute;
 	background-color: #eeeeee;
@@ -126,7 +130,7 @@ div{
 	padding: 10px;
 }
 
-#ctcontent h2{
+.ctcontent h2{
 	font-size: 20px;
 	padding: 0;
 	margin: 0;
@@ -138,13 +142,32 @@ div{
 	margin: 0;
 }
 
-.ctmenu:hover #ctcontent {
+.ctmenu:hover .ctcontent {
 	display: block;
+	cursor: help;
 }
 
+#back-box{
+	float:left;
+	width: 50px;
+	padding-top: 10px;
+	font-size: 10px;
+}
 
+#back-button{
+	background-color: white;
+	border: 1px solid white;
+	color: #999999;
+	font-weight: bold;
+	font-family: Heebo;
+	font-size: 20px;
 
+	cursor: pointer;
+}
 
+a{
+	text-decoration: none;
+}
 
 
 

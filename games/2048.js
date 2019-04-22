@@ -1,5 +1,3 @@
-// Starter code for new games
-
 // Global constants
 const BOARD_SIZE = 512;	// Canvas BOARD_SIZE in pixels
 var gridLength = 122; //(BOARD_SIZE/ 4) - 6;
@@ -21,21 +19,21 @@ var hScore = 0;
 $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
-  high_score = $("#hs");
-  $("#board").css("background-color", "black");
-  $(document).keydown(keyPressed);
-    
-  createGrids();
-  drawAllGrids();
-  pasteNewGrid();
-  pasteNewGrid();
+    high_score = $("#hs");
+    $("#board").css("background-color", "black");
+    $(document).keydown(keyPressed);
+
+    createGrids();
+    drawAllGrids();
+    pasteNewGrid();
+    pasteNewGrid();
 
 	// set titles
 	$("#game-title").text("2048");
 	$("title").text("Javascript Arcade - 2048");
 
 	// set controls
-	$("#controls").append("<p>Arrow Keys: move the grids</p>");
+	$("#controls-text").html("Arrow Keys: Shift all blocks in arrow's direction.<br>Combine same blocks to reach 2048!");
 });
 
 
@@ -190,7 +188,7 @@ function slideRight () {
     }
     pasteNewGrid();
   }
-  
+
   function slideLeft() {
     var i, j;
     var coll;
@@ -212,7 +210,7 @@ function slideRight () {
               grids[i][coll].value = 0;
               break;
             } else {
-              break; 
+              break;
             }
           }
         }
@@ -220,7 +218,7 @@ function slideRight () {
     }
     pasteNewGrid();
   }
-  
+
   function slideUp() {
     var i, j, row;
     for(j = 0; j < 4; j++) {
@@ -241,7 +239,7 @@ function slideRight () {
               grids[row][j].value = 0;
               break;
             } else {
-              break; 
+              break;
             }
           }
         }
@@ -249,7 +247,7 @@ function slideRight () {
     }
     pasteNewGrid();
   }
-  
+
   function slideDown() {
     var i, j, row;
     for(j = 0; j < 4; j++) {
@@ -270,7 +268,7 @@ function slideRight () {
               grids[row][j].value = 0;
               break;
             } else {
-              break; 
+              break;
             }
           }
         }
