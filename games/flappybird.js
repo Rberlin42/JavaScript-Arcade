@@ -10,8 +10,7 @@ var scoreBoard;
 var hScore = 0;
 var score = 0; 
 
-var pressed = false; 
-var isPaused = true; 
+var pressed = false;
 var isGameOver = false; 
 
 
@@ -39,12 +38,11 @@ $(document).ready(function(){
 //restart the game
 function reset(){
     $("#game-over").hide();
-    isPaused = false;
     isGameOver = false;
     score = 0;
     player = new Bird(32, 240, 80, 70);
-    pipeTop = new Pipe(0, 0, 200, 100, 2);
-    pipeBottom = new Pipe(512, 400, 80, 300, 2);
+    pipeTop = new Pipe(360, 0, 80, 300, 2);
+    pipeBottom = new Pipe(360, 480, 80, 300, 2);
     gameLoop();
 }
 
@@ -77,7 +75,8 @@ Bird.prototype.update = function () {
     this.fallSpeed += 0.1; 
     this.y += this.fallSpeed + this.ySpeed; 
 
-    if (this.x + this.w >= pipeTop.x && this.x <= pipeTop.x + pipeTop.w) {
+    if (this.x + this.w >= pipeTop.x && this.x <= pipeTop.x + pipeTop.w && 
+        this.x + this.w >= pipeBottom.x && this.x <= pipeBottom.x + pipeBottom.w) {
         // Then check if it touches any of the pipes on the y axis
         if (this.y + this.h >= pipeBottom.y || this.y <= pipeTop.y + pipeTop.h) {
             isGameOver = true;
@@ -91,6 +90,8 @@ Bird.prototype.update = function () {
             }
         }
     }
+
+
 
     // Die when hit the ground
     if (this.y >= 600) {
@@ -118,7 +119,7 @@ function Pipe(x, y, w, h, speed) {
     // Physical properties
     this.x = x;
     this.y = y;
-    this.w = w;
+    this.w = 80;
     this.h = h;
     this.speed = speed;
 }
@@ -126,7 +127,7 @@ function Pipe(x, y, w, h, speed) {
 // Draw call
 function drawPipe(pipe) {
     board.fillStyle = "black";
-    board.fillRect(pipe.x, pipe.y, pipe.w, pipe.h);
+    board.fillRect(pipe.x, pipe.y, 80, pipe.h);
 }
 
 // Update call
@@ -138,31 +139,14 @@ function updatePipe(pipe) {
         pipe.x = 480; 
 
         // If the pipe is the top one
-        if (pipe.y <= 250) {
-            pipe.y = -(Math.random() * (200 - 50) + 50); 
+        if (pipe.y == 0) {
+            pipe.h = (Math.random() * (150 - 50) + 150); 
             // If the pipe is the bottom one
         } else {
-            pipe.y = 320 + (Math.random() * (200 - 50) + 50);
+            pipe.y = 250 + (Math.random() * (150 - 50) + 150);
         }
     }
 }
-
-
-
-
-// Custom function for writing a stroked text
-function drawText(text, x, y) {
-    board.fillStyle = 'white';
-    board.fillText(text, x, y);
-    board.strokeText(text, x, y);
-}
-
-// Custom function for drawing a tint on the screen
-function drawTint(x, y, w, h) {
-    board.fillStyle = 'white';
-    board.fillRect(x, y, w, h);
-}
-
 
 
 document.addEventListener('keydown', function(event) {
@@ -180,6 +164,10 @@ document.addEventListener('keyup', function(event) {
 
 function gameLoop() {
 
+    if (isGameOver) {
+        gameOver();
+    }
+
     if (!isGameOver) {
         player.update();
         updatePipe(pipeTop);
@@ -192,9 +180,6 @@ function gameLoop() {
     drawPipe(pipeTop);
     drawPipe(pipeBottom);
 
-    if (isGameOver) {
-        gameOver();
-    } 
-
+    
     window.requestAnimationFrame(gameLoop);
 }
