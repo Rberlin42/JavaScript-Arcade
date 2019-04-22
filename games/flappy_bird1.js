@@ -195,7 +195,7 @@ function draw(){
 
 function aTree(){
 	this.x = BOARD_SIZE - WIDTH;
-	this.y = Math.floor(Math.random() * 128) + 50;
+	this.y = Math.floor(Math.random() * 128) + 75;
 	this.height =  Math.floor(Math.random() * 200) + 128;
 
 	this.draw = function(){
