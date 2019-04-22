@@ -18,7 +18,7 @@
 		<div id="back-box"><a href="index.html" title="Back to Main Page"><button id="back-button">&#10094</button></a></div>
 		<div id="title-box">
 			
-			<div class="ctmenu"><button id="ctbutton">?</button><div class="ctcontent"><h2>Controls</h2><p id="controls-text">Here are some example controls.</p></div></div>
+			<div class="ctmenu"><button id="ctbutton">?</button><div class="ctcontent"><h2>Instructions</h2><p id="controls-text">Here are some example controls.</p></div></div>
 				<h1 id="game-title"></h1>
 		</div>
 		<div id="game-container">
