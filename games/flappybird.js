@@ -32,7 +32,7 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Title");
 
 	// set controls
-    $("#controls").append("<p>use up and down to control the bird</p>");
+    $("#controls").append("<p>use up arrow to control the bird</p>");
 });
 
 //restart the game
@@ -49,7 +49,6 @@ function reset(){
 // Game over
 function gameOver(){
     $("#game-over").show();
-    player.fallSpeed = 0;
 }
 
 function Bird(x, y, w, h) {
@@ -61,7 +60,6 @@ function Bird(x, y, w, h) {
     this.ySpeed = 0;
 
     this.scored = false;
-    this.frame = 0; // This will be either 0 or 1, based on this the sprite will be animated
 }
 
 
@@ -72,8 +70,8 @@ function drawBird (aBird) {
 
 Bird.prototype.update = function () {
     // Handle the gravity
-    this.fallSpeed += 0.1; 
-    this.y += this.fallSpeed + this.ySpeed; 
+    this.ySpeed += 0.1;
+    this.y += this.ySpeed;
 
     if (this.x + this.w >= pipeTop.x && this.x <= pipeTop.x + pipeTop.w && 
         this.x + this.w >= pipeBottom.x && this.x <= pipeBottom.x + pipeBottom.w) {
@@ -100,13 +98,6 @@ Bird.prototype.update = function () {
 
     if (pipeTop.x >= 360) {
         this.scored = false;
-    }
-
-    // Handle the animation based on going up or down
-    if (this.fallSpeed <= 1) {
-        this.frame = 1;
-    } else {
-        this.frame = 0;
     }
 }
 
@@ -179,7 +170,6 @@ function gameLoop() {
     drawBird(player);
     drawPipe(pipeTop);
     drawPipe(pipeBottom);
-
-    
+ 
     window.requestAnimationFrame(gameLoop);
 }
