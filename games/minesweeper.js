@@ -367,7 +367,5 @@ function draw(){
 			drawFunctions[field[i][j]](i, j);
 		}
 	}
-	board.fillStyle = "#0000FF";
-	board.fillRect(0, 0, 1, 1);
 }
 
