@@ -3,11 +3,21 @@
 // Global constants
 const BOARD_SIZE = 512;	// Canvas size in pixels
 
-
 // DOM elements
 var high_score;
 var board;
 var scoreBoard;
+var hScore = 0;
+var score = 0; 
+
+var pressed = false; 
+var isPaused = true; 
+var isGameOver = false; 
+
+
+var player = new Bird(32, 240, 80, 70);
+var pipeTop = new Pipe(360, 0, 80, 300, 2);
+var pipeBottom = new Pipe(360, 480, 80, 300, 2);
 
 
 // store some DOM elements when the document is loaded
@@ -23,10 +33,26 @@ $(document).ready(function(){
 	$("title").text("Javascript Arcade - Title");
 
 	// set controls
-	$("#controls").append("<p>use up and down to control the bird</p>");
+    $("#controls").append("<p>use up and down to control the bird</p>");
 });
 
+//restart the game
+function reset(){
+    $("#game-over").hide();
+    isPaused = false;
+    isGameOver = false;
+    score = 0;
+    player = new Bird(32, 240, 80, 70);
+    pipeTop = new Pipe(0, 0, 200, 100, 2);
+    pipeBottom = new Pipe(512, 400, 80, 300, 2);
+    gameLoop();
+}
 
+// Game over
+function gameOver(){
+    $("#game-over").show();
+    player.fallSpeed = 0;
+}
 
 function Bird(x, y, w, h) {
     this.x = x;
@@ -41,8 +67,9 @@ function Bird(x, y, w, h) {
 }
 
 
-Bird.prototype.draw = function () {
-    ctx.drawImage(sprites, 360, 81 + (this.frame * 70), 80, 70, this.x, this.y, this.w, this.h);
+function drawBird (aBird) {
+    board.fillStyle = "#FF0000";
+    board.fillRect( aBird.x, aBird.y, aBird.w, aBird.h);
 }
 
 Bird.prototype.update = function () {
@@ -57,6 +84,9 @@ Bird.prototype.update = function () {
         } else {
             if (!this.scored) {
                 score++;
+                hScore = Math.max(hScore, score);
+                scoreBoard.html("Score: " + score.toString());
+                high_score.html("High Score: " + hScore.toString());
                 this.scored = true;
             }
         }
@@ -94,90 +124,46 @@ function Pipe(x, y, w, h, speed) {
 }
 
 // Draw call
-Pipe.prototype.draw = function () {
-    ctx.drawImage(sprites, 360, 0, 80, 80, this.x, this.y, this.w, this.h);
+function drawPipe(pipe) {
+    board.fillStyle = "black";
+    board.fillRect(pipe.x, pipe.y, pipe.w, pipe.h);
 }
 
 // Update call
-Pipe.prototype.update = function () {
-    this.x -= this.speed;
+function updatePipe(pipe) {
+    pipe.x -= pipe.speed;
 
     // Check if the pipe is out of the screen
-    if (this.x + this.w <= 0) {
-        this.x = 360; 
+    if (pipe.x + pipe.w <= 0) {
+        pipe.x = 480; 
 
         // If the pipe is the top one
-        if (this.y <= 320) {
-            this.y = -(Math.random() * (150 - 50) + 50); 
+        if (pipe.y <= 250) {
+            pipe.y = -(Math.random() * (200 - 50) + 50); 
             // If the pipe is the bottom one
         } else {
-            this.y = 320 + (Math.random() * (150 - 50) + 50);
+            pipe.y = 320 + (Math.random() * (200 - 50) + 50);
         }
     }
 }
 
-function Background(x, y, w, h, speed) {
-    // Physical properties
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.speed = speed;
-}
 
-// Draw call
-Background.prototype.draw = function() {
-    ctx.drawImage(sprites, 0, 0, 360, 640, this.x, this.y, this.w, this.h);
-}
 
-// Update call
-Background.prototype.update = function() {
-    // Make it move to left with a constant speed
-    this.x -= this.speed;
-
-    // If it gets out from the screen, make it jump to the starting position so it seamlessy keeps scrolling endlessly
-    if (this.x <= -360) {
-        this.x = 360;
-    }
-}
-
-// Establish the screen
-var canvas = document.getElementById('game-canvas');
-var ctx = canvas.getContext('2d');
-ctx.font = 'bold 56px Comic Sans MS';
-ctx.fillStyle = 'white';
-ctx.textAlign = 'center';
-ctx.lineWidth = 2;
-ctx.strokeStyle = 'black';
-
-// Load sprites into a global variable
-var sprites = document.getElementById('sprites');
 
 // Custom function for writing a stroked text
 function drawText(text, x, y) {
-    ctx.fillStyle = 'white';
-    ctx.fillText(text, x, y);
-    ctx.strokeText(text, x, y);
+    board.fillStyle = 'white';
+    board.fillText(text, x, y);
+    board.strokeText(text, x, y);
 }
 
 // Custom function for drawing a tint on the screen
 function drawTint(x, y, w, h) {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.fillRect(x, y, w, h);
+    board.fillStyle = 'white';
+    board.fillRect(x, y, w, h);
 }
 
 
-var score = 0; 
-var pressed = false; 
-var isPaused = true; 
-var isGameOver = false; t
-
-
-var player = new Bird(32, 240, 80, 70);
-var pipeTop = new Pipe(360, 0, 80, 300, 2);
-var pipeBottom = new Pipe(360, 480, 80, 300, 2);
-var background1 = new Background(0, 0, 360, 640, 2);
-var background2 = new Background(360, 0, 360, 640, 2);
 
 document.addEventListener('keydown', function(event) {
     // Up arrow button: Player control
@@ -186,19 +172,6 @@ document.addEventListener('keydown', function(event) {
         pressed = true; // Mark this true so the player can not keep the button pressed
     }
 
-    if (event.keyCode === 13) {
-        if (isGameOver) {
-            window.location.reload();
-        }
-
-        if (isPaused) {
-            isPaused = false;
-        }
-    }
-
-    if (event.keyCode === 27 && !isPaused && !isGameOver) {
-        isPaused = true;
-    }
 }, false);
 
 document.addEventListener('keyup', function(event) {
@@ -207,40 +180,21 @@ document.addEventListener('keyup', function(event) {
 
 function gameLoop() {
 
-    if (!isPaused && !isGameOver) {
+    if (!isGameOver) {
         player.update();
-        pipeTop.update();
-        pipeBottom.update();
-        background1.update();
-        background2.update();
+        updatePipe(pipeTop);
+        updatePipe(pipeBottom);
     }
 
-    ctx.clearRect(0, 0, 360, 640);
+    board.clearRect(0, 0, 512, 512);
 
-    background1.draw();
-    background2.draw();
+    drawBird(player);
+    drawPipe(pipeTop);
+    drawPipe(pipeBottom);
 
-    player.draw();
-    pipeTop.draw();
-    pipeBottom.draw();
-
-    if (isPaused) {
-        drawTint(0, 0, 360, 640);
-        drawText('Hit "Enter"', 180, 310);
-        drawText('to play!', 180, 380);
-        if (score > 0) {
-            drawText(score, 180, 52);
-        }
-    } else if (isGameOver) {
-        drawTint(0, 0, 360, 640);
-        drawText('Game Over', 180, 310);
-        drawText('Score: ' + score, 180, 380);
-    } else {
-        drawTint(0, 0, 360, 64);
-        drawText(score, 180, 52);
-    }
+    if (isGameOver) {
+        gameOver();
+    } 
 
     window.requestAnimationFrame(gameLoop);
 }
-
-gameLoop(); 
