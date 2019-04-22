@@ -37,6 +37,7 @@ $(document).ready(function(){
 
 //restart the game
 function reset(){
+    isGameOver = true;
     $("#game-over").hide();
     isGameOver = false;
     score = 0;
