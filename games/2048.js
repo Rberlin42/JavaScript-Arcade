@@ -21,14 +21,14 @@ var hScore = 0;
 $(document).ready(function(){
 	board = $("#board")[0].getContext("2d");
 	scoreBoard = $("#score");
-    high_score = $("#hs");
-    $("#board").css("background-color", "black");
-    $(document).keydown(keyPressed);
+  high_score = $("#hs");
+  $("#board").css("background-color", "black");
+  $(document).keydown(keyPressed);
     
-    createGrids();
-    drawAllGrids();
-    pasteNewGrid();
-    pasteNewGrid();
+  createGrids();
+  drawAllGrids();
+  pasteNewGrid();
+  pasteNewGrid();
 
 	// set titles
 	$("#game-title").text("2048");
