@@ -88,7 +88,7 @@ function reset(){
 	clearInterval(timer);
 	score = 0;
 	lives = 3;
-	level = 0;
+	level = 5;
 	setLevel(level);
 	timer = setInterval(gameLoop, CLOCK_SPEED);
 }
